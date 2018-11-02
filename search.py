@@ -121,16 +121,79 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    closed =[]
+    fringe = util.Queue()
+    node = [problem.getStartState(),None,0]
+    fringe.push(node)
+    while True:
+        if fringe.isEmpty():
+            print "There is not any path"
+            return []
+        node = fringe.pop()
+        depth = node[2]
+        if problem.isGoalState(node[0]):
+            break
+        if node[0] not in closed:
+            closed.append(node[0])
+            for childeNode in problem.getSuccessors(node[0]):
+                fringe.push([childeNode[0],childeNode[1],depth + 1,node])
+
+    print node
+    path = util.Stack()
+    while True:
+        if node[1]==None:
+            break
+        path.push(node[1])
+        node = node[3]
+    finalPath = []
+    while not path.isEmpty():
+        finalPath.append(path.pop())
+    print finalPath
+    return finalPath
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
+    closed =[]
+    fringe = util.PriorityQueue()
+    node = [problem.getStartState(),None,0]
+    fringe.push(node,0)
+    while True:
+        if fringe.isEmpty():
+            print "There is not any path"
+            return []
+        node = fringe.pop()
+        depth = node[2]
+        if problem.isGoalState(node[0]):
+            break
+        if node[0] not in closed:
+            closed.append(node[0])
+            for childeNode in problem.getSuccessors(node[0]):
+                tempNode = [childeNode[0],childeNode[1],depth + 1,node]
+                fringe.push([childeNode[0],childeNode[1],depth + 1,node],problem.getCostOfActions(getPath(tempNode)))
+
+    print node
+    path = util.Stack()
+    while True:
+        if node[1]==None:
+            break
+        path.push(node[1])
+        node = node[3]
+    finalPath = []
+    while not path.isEmpty():
+        finalPath.append(path.pop())
+    print finalPath
+    return finalPath
+
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
-    A heuristic function estimates the cost from the current state to the nearest
+    A heuristic function estimates the cost from
+    the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
@@ -139,6 +202,19 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
+def getPath(node):
+    path = util.Stack()
+    while True:
+        if node[1]==None:
+            break
+        path.push(node[1])
+        node = node[3]
+    finalPath = []
+    while not path.isEmpty():
+        finalPath.append(path.pop())
+    return finalPath
+
 
 
 # Abbreviations
