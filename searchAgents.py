@@ -474,6 +474,8 @@ class ClosestDotSearchAgent(SearchAgent):
         print 'Path found with cost %d.' % len(self.actions)
 
     def findPathToClosestDot(self, gameState):
+
+
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
@@ -485,6 +487,36 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        problem.isGoalState(startPosition)
+        closed =[]
+        fringe = util.Queue()
+        node = [startPosition,None,0]
+        fringe.push(node)
+        while True:
+            if fringe.isEmpty():
+                print "There is not any path"
+                return []
+            node = fringe.pop()
+            depth = node[2]
+            if problem.isGoalState(node[0]):
+                break
+            if node[0] not in closed:
+                closed.append(node[0])
+                for childeNode in problem.getSuccessors(node[0]):
+                    fringe.push([childeNode[0],childeNode[1],depth + 1,node])
+
+        path = util.Stack()
+        while True:
+            if node[1]==None:
+                break
+            path.push(node[1])
+            node = node[3]
+        finalPath = []
+        while not path.isEmpty():
+            finalPath.append(path.pop())
+        return finalPath
+
+
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -521,6 +553,24 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+
+        if self.food[x][y] == True:
+            return True
+        else:
+            return False
+
+
+
+
+
+
+
+
+
+
+
+
+
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
