@@ -220,11 +220,18 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 tempNode = [chileNode[0],chileNode[1],depth + 1,node]
                 priorityA = problem.getCostOfActions(getPath(tempNode)) + heuristic(chileNode[0],problem)
                 fringe.push(tempNode,priorityA)
-    print node
+        print node
     path = util.Stack()
     while True:
         if node[1]==None:
             break
+        path.push(node[1])
+        node = node[3]
+    finalPath = []
+    while not path.isEmpty():
+        finalPath.append(path.pop())
+    print finalPath
+    return finalPath
 
     util.raiseNotDefined()
 
